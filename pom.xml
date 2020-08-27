@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.svenkubiak</groupId>
 	<artifactId>http4j</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0-Alpha1</version>
 	<packaging>jar</packaging>
 	<name>Http4j</name>
 	<description>Minimalistic and fluent library for making Http calls in Java.</description>
@@ -31,7 +31,7 @@
 		<connection>scm:git:git@github.com:svenkubiak/http4j.git</connection>
 		<developerConnection>scm:git:git@github.com:svenkubiak/http4j.git</developerConnection>
 		<url>git@github.com:svenkubiak/http4j.git</url>
-		<tag>HEAD</tag>
+		<tag>1.0.0-Alpha1</tag>
 	</scm>
 	<build>
 		<plugins>
@@ -191,6 +191,28 @@
 			<groupId>io.undertow</groupId>
 			<artifactId>undertow-core</artifactId>
 			<version>2.1.3.Final</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.jboss.logging</groupId>
+					<artifactId>jboss-logging</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.wildfly.common</groupId>
+					<artifactId>wildfly-common</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.logging</groupId>
+			<artifactId>jboss-logging</artifactId>
+			<version>3.4.1.Final</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.wildfly.common</groupId>
+			<artifactId>wildfly-common</artifactId>
+			<version>1.5.4.Final-format-001</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
