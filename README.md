@@ -53,5 +53,9 @@ Usage
 
 Roadmap
 ------------------
-- Support async Http connections
-- Support form attachments
+[ ] JavaDoc
+[ ] More unit tests
+[ ] Add attachment form attribute
+[ ] Check basic authentication via Proxy
+[ ] Support async Http connections
+[ ] Support form attachments

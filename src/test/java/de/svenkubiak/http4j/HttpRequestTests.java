@@ -1,5 +1,6 @@
 package de.svenkubiak.http4j;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -29,6 +30,26 @@ public class HttpRequestTests {
             .execute();
         
         assertTrue(httpResponse.getHttpStatusCode() == 203);
+    }
+    
+    @Test
+    public void testIsOk() throws HttpRequestException {
+        HttpResponse httpResponse = HttpRequest.GET()
+            .to(URL + "/test/get")
+            .execute();
+        
+        assertTrue(httpResponse.isSuccessful());
+        assertTrue(httpResponse.isOk());
+    }
+    
+    @Test
+    public void testisSuccessful() throws HttpRequestException {
+        HttpResponse httpResponse = HttpRequest.GET()
+            .to(URL + "/test/get/statuscode")
+            .execute();
+        
+        assertTrue(httpResponse.isSuccessful());
+        assertFalse(httpResponse.isOk());
     }
     
     @Test
