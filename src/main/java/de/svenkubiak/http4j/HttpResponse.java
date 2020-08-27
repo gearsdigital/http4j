@@ -64,7 +64,7 @@ public class HttpResponse {
      * @param clazz The class to convert the JSON body to
      * @return The converted object class
      * 
-     * @throws HttpRequestException
+     * @throws HttpRequestException when the convertion fails
      */
     public <T> T getJsonBodyAs(Class<T> clazz) throws HttpRequestException {
         ObjectMapper objectMapper = new ObjectMapper();
