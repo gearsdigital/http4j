@@ -18,7 +18,7 @@ HttpResponse httpResponse = HttpRequest.GET()
     .to("https://www.google.de")
     .execute();
     
-if (httpResponse.isSuccesful()) {
+if (httpResponse.isSuccessful()) {
 	String body = httpResponse.getBody();
 }
 ```
