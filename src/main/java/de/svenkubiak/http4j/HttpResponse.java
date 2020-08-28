@@ -34,7 +34,7 @@ public class HttpResponse {
     /**
      * @return True if the Http status code is any of 2xx Success
      */
-    public boolean isSuccessful() {
+    public boolean isSuccess() {
         return String.valueOf(httpResponse.statusCode()).startsWith("2");
     }
     

@@ -16,16 +16,25 @@ public class HttpRequestTests {
     
     @Test
     public void testGet() throws HttpRequestException {
-        HttpResponse httpResponse = HttpRequest.GET()
+        HttpResponse httpResponse = HttpRequest.get()
             .to(URL + "/test/get")
             .execute();
         
-        assertTrue(httpResponse.isSuccessful());
+        assertTrue(httpResponse.isSuccess());
+    }
+    
+    @Test
+    public void testOptions() throws HttpRequestException {
+        HttpResponse httpResponse = HttpRequest.get()
+            .to(URL + "/test/options")
+            .execute();
+        
+        assertTrue(httpResponse.getHttpStatusCode() == 405);
     }
     
     @Test
     public void testGetStatusCode() throws HttpRequestException {
-        HttpResponse httpResponse = HttpRequest.GET()
+        HttpResponse httpResponse = HttpRequest.get()
             .to(URL + "/test/get/statuscode")
             .execute();
         
@@ -34,76 +43,76 @@ public class HttpRequestTests {
     
     @Test
     public void testIsOk() throws HttpRequestException {
-        HttpResponse httpResponse = HttpRequest.GET()
+        HttpResponse httpResponse = HttpRequest.get()
             .to(URL + "/test/get")
             .execute();
         
-        assertTrue(httpResponse.isSuccessful());
+        assertTrue(httpResponse.isSuccess());
         assertTrue(httpResponse.isOk());
     }
     
     @Test
-    public void testisSuccessful() throws HttpRequestException {
-        HttpResponse httpResponse = HttpRequest.GET()
+    public void testIsSuccess() throws HttpRequestException {
+        HttpResponse httpResponse = HttpRequest.get()
             .to(URL + "/test/get/statuscode")
             .execute();
         
-        assertTrue(httpResponse.isSuccessful());
+        assertTrue(httpResponse.isSuccess());
         assertFalse(httpResponse.isOk());
     }
     
     @Test
     public void testGetHeader() throws HttpRequestException {
-        HttpResponse httpResponse = HttpRequest.GET()
+        HttpResponse httpResponse = HttpRequest.get()
             .to(URL + "/test/get/header")
             .execute();
         
-        assertTrue(httpResponse.isSuccessful());
+        assertTrue(httpResponse.isSuccess());
         assertTrue(httpResponse.getHeader("x-custom-header").equals("foo"));
     }
     
     @Test
     public void testPost() throws HttpRequestException {
-        HttpResponse httpResponse = HttpRequest.POST()
+        HttpResponse httpResponse = HttpRequest.post()
             .to(URL + "/test/post")
             .execute();
         
-        assertTrue(httpResponse.isSuccessful());
+        assertTrue(httpResponse.isSuccess());
     }
     
     @Test
     public void testPut() throws HttpRequestException {
-        HttpResponse httpResponse = HttpRequest.PUT()
+        HttpResponse httpResponse = HttpRequest.put()
             .to(URL + "/test/put")
             .execute();
         
-        assertTrue(httpResponse.isSuccessful());
+        assertTrue(httpResponse.isSuccess());
     }
     
     @Test
     public void testPatch() throws HttpRequestException {
-        HttpResponse httpResponse = HttpRequest.PATCH()
+        HttpResponse httpResponse = HttpRequest.patch()
             .to(URL + "/test/patch")
             .execute();
         
-        assertTrue(httpResponse.isSuccessful());
+        assertTrue(httpResponse.isSuccess());
     }
     
     @Test
     public void testDelete() throws HttpRequestException {
-        HttpResponse httpResponse = HttpRequest.DELETE()
+        HttpResponse httpResponse = HttpRequest.delete()
             .to(URL + "/test/delete")
             .execute();
         
-        assertTrue(httpResponse.isSuccessful());
+        assertTrue(httpResponse.isSuccess());
     }
     
     @Test
     public void testHead() throws HttpRequestException {
-        HttpResponse httpResponse = HttpRequest.HEAD()
+        HttpResponse httpResponse = HttpRequest.head()
             .to(URL + "/test/head")
             .execute();
         
-        assertTrue(httpResponse.isSuccessful());
+        assertTrue(httpResponse.isSuccess());
     }
 }

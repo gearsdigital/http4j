@@ -18,7 +18,8 @@ public class HttpTestServer {
                 .add("PUT", "/test/put", exchange -> {exchange.setStatusCode(200).endExchange();})
                 .add("HEAD", "/test/head", exchange -> {exchange.setStatusCode(200).endExchange();})
                 .add("PATCH", "/test/patch", exchange -> {exchange.setStatusCode(200).endExchange();})
-                .add("DELETE", "/test/delete", exchange -> {exchange.setStatusCode(200).endExchange();}))
+                .add("DELETE", "/test/delete", exchange -> {exchange.setStatusCode(200).endExchange();})
+                .add("OPTIONS", "/test/options", exchange -> {exchange.setStatusCode(200).endExchange();}))
             .build()
             .start();
     }

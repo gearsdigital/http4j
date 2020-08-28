@@ -6,7 +6,7 @@ import java.util.Map;
 public class App {
     public static void main( String[] args ) throws HttpRequestException {
         Object object = null;
-            HttpResponse httpResponse = HttpRequest.GET()
+            HttpResponse httpResponse = HttpRequest.get()
                 .to("foo")
                 .disableRedirects()
                 .withTimeout(Duration.ofSeconds(5))
@@ -20,7 +20,7 @@ public class App {
                 .withBasicAuthentication("foo", "bar")
                 .execute();
             
-        httpResponse.isSuccessful();
+        httpResponse.isSuccess();
         httpResponse.isOk();
         httpResponse.getHttpStatusCode();
         httpResponse.getHeader("foo");

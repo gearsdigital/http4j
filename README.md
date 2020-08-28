@@ -53,7 +53,7 @@ HttpResponse httpResponse = HttpRequest.GET()
     .withBasicAuthentication("foo", "bar")
     .execute();
     
-httpResponse.isSuccessful();
+httpResponse.isSuccess();
 httpResponse.isOk();
 httpResponse.getHttpStatusCode();
 httpResponse.getHeader("foo");

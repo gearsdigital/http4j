@@ -17,26 +17,32 @@ import java.util.Objects;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import de.svenkubiak.http4j.enums.HttpMethod;
+
 /**
  * 
  * @author svenkubiak
  *
  */
 public class HttpRequest {
+    private static final String CONTENT_TYPE = "Content-Type";
+    private static final String APPLICATION_JSON = "application/json";
+    private static final String APPLICATION_X_WWW_FORM_URLENCODED = "application/x-www-form-urlencoded";
     private java.net.http.HttpClient.Builder httpClientBuilder = java.net.http.HttpClient.newBuilder();
     private java.net.http.HttpRequest.Builder httpRequestBuilder = java.net.http.HttpRequest.newBuilder();
     private Map<String, String> formAttributes = new HashMap<>();
-    private String method;
+    private HttpMethod httpMethod;
     
-    public HttpRequest(String method) {
-        this.method = method;
+    public HttpRequest(HttpMethod httpMethod) {
+        this.httpMethod = httpMethod;
         
         httpRequestBuilder
-            .method(method, BodyPublishers.noBody())
+            .method(this.httpMethod.toString(), BodyPublishers.noBody())
             .version(Version.HTTP_2)
             .timeout(Duration.ofSeconds(5));
         
         httpClientBuilder.followRedirects(java.net.http.HttpClient.Redirect.ALWAYS)
+            .connectTimeout(Duration.ofSeconds(5))
             .version(Version.HTTP_2);
     }
     
@@ -45,8 +51,8 @@ public class HttpRequest {
      * 
      * @return HttpRequest instance
      */
-    public static HttpRequest GET() {
-        return new HttpRequest("GET");
+    public static HttpRequest get() {
+        return new HttpRequest(HttpMethod.GET);
     }
     
     /**
@@ -54,8 +60,8 @@ public class HttpRequest {
      * 
      * @return HttpRequest instance
      */
-    public static HttpRequest POST() {
-        return new HttpRequest("POST");
+    public static HttpRequest post() {
+        return new HttpRequest(HttpMethod.POST);
     }
     
     /**
@@ -63,8 +69,8 @@ public class HttpRequest {
      * 
      * @return HttpRequest instance
      */
-    public static HttpRequest PUT() {
-        return new HttpRequest("PUT");
+    public static HttpRequest put() {
+        return new HttpRequest(HttpMethod.PUT);
     }
     
     /**
@@ -72,8 +78,8 @@ public class HttpRequest {
      * 
      * @return HttpRequest instance
      */
-    public static HttpRequest DELETE() {
-        return new HttpRequest("DELETE");
+    public static HttpRequest delete() {
+        return new HttpRequest(HttpMethod.DELETE);
     }
     
     /**
@@ -81,8 +87,8 @@ public class HttpRequest {
      * 
      * @return HttpRequest instance
      */
-    public static HttpRequest HEAD() {
-        return new HttpRequest("HEAD");
+    public static HttpRequest head() {
+        return new HttpRequest(HttpMethod.HEAD);
     }
     
     /**
@@ -90,8 +96,17 @@ public class HttpRequest {
      * 
      * @return HttpRequest instance
      */
-    public static HttpRequest PATCH() {
-        return new HttpRequest("PATCH");
+    public static HttpRequest patch() {
+        return new HttpRequest(HttpMethod.PATCH);
+    }
+    
+    /**
+     * Creates a new Http OPTIONS request
+     * 
+     * @return HttpRequest instance
+     */
+    public static HttpRequest options() {
+        return new HttpRequest(HttpMethod.OPTIONS);
     }
 
     /**
@@ -131,9 +146,9 @@ public class HttpRequest {
      */
     public HttpRequest withFormAttribute(String name, String value) {
         Objects.requireNonNull(name, "name can not be null");
-        this.formAttributes.put(name, value);
+        formAttributes.put(name, value);
         
-        httpRequestBuilder.header("Content-Type", "application/x-www-form-urlencoded");
+        httpRequestBuilder.header(CONTENT_TYPE, APPLICATION_X_WWW_FORM_URLENCODED);
         
         return this;
     }
@@ -147,7 +162,7 @@ public class HttpRequest {
      */
     public HttpRequest withBody(String body) {
         Objects.requireNonNull(body, "body can not be null");
-        httpRequestBuilder.method(method, BodyPublishers.ofString(body));        
+        httpRequestBuilder.method(httpMethod.toString(), BodyPublishers.ofString(body));        
         
         return this;
     }
@@ -162,9 +177,9 @@ public class HttpRequest {
      */
     public HttpRequest withHeader(String name, String value) {
         Objects.requireNonNull(name, "name can not be null");
-        httpRequestBuilder.header(name, value);
+        httpRequestBuilder.setHeader(name, value);
         
-        return null;
+        return this;
     }
 
     /**
@@ -201,6 +216,7 @@ public class HttpRequest {
     public HttpRequest withTimeout(Duration duration) {
         Objects.requireNonNull(duration, "duration can not be null");
         httpRequestBuilder.timeout(duration);
+        httpClientBuilder.connectTimeout(duration);
         
         return this;
     }
@@ -248,12 +264,12 @@ public class HttpRequest {
         
         var objectMapper = new ObjectMapper();
         try {
-            httpRequestBuilder.method(method, BodyPublishers.ofString(objectMapper.writeValueAsString(object)));
+            httpRequestBuilder.method(httpMethod.toString(), BodyPublishers.ofString(objectMapper.writeValueAsString(object)));
         } catch (JsonProcessingException e) {
             throw new HttpRequestException("Failed to convert object to JSON string", e);
         }      
         
-        httpRequestBuilder.header("Content-Type", "application/json");
+        httpRequestBuilder.header(CONTENT_TYPE, APPLICATION_JSON);
         
         return this;
     }
@@ -283,12 +299,12 @@ public class HttpRequest {
         java.net.http.HttpResponse<String> response = null;
         
         if (!formAttributes.isEmpty()) {
-            if (("POST").equals(method)) {
+            if (("POST").equals(httpMethod.toString())) {
                 httpRequestBuilder.POST(getFormData());                
-            } else if (("PUT").equals(method)) {
+            } else if (("PUT").equals(httpMethod.toString())) {
                 httpRequestBuilder.PUT(getFormData());
             }
-            httpRequestBuilder.header("Content-Type", "application/x-www-form-urlencoded");
+            httpRequestBuilder.header(CONTENT_TYPE, APPLICATION_X_WWW_FORM_URLENCODED);
         }
         
         try {
