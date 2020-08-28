@@ -304,11 +304,11 @@ public class HttpRequest {
         var builder = new StringBuilder();
         for (Map.Entry<String, String> entry : formAttributes.entrySet()) {
             if (builder.length() > 0) {
-                builder.append("&");
+                builder.append('&');
             }
-            builder.append(URLEncoder.encode(entry.getKey().toString(), StandardCharsets.UTF_8));
-            builder.append("=");
-            builder.append(URLEncoder.encode(entry.getValue().toString(), StandardCharsets.UTF_8));
+            builder.append(URLEncoder.encode(entry.getKey(), StandardCharsets.UTF_8));
+            builder.append('=');
+            builder.append(URLEncoder.encode(entry.getValue(), StandardCharsets.UTF_8));
         }
         
         return java.net.http.HttpRequest.BodyPublishers.ofString(builder.toString());

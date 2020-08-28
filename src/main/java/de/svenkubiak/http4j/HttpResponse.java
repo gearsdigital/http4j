@@ -28,7 +28,7 @@ public class HttpResponse {
      * @return The body of the Http request
      */
     public String getBody() {
-        return httpResponse.body().toString();        
+        return httpResponse.body();        
     }
 
     /**
@@ -54,7 +54,7 @@ public class HttpResponse {
     public String getHeader(String name) {
         Objects.requireNonNull(name, "name can not be null");
         
-        return httpResponse.headers().firstValue(name).get();
+        return httpResponse.headers().firstValue(name).orElse("");
     }
 
     /**
@@ -71,7 +71,7 @@ public class HttpResponse {
         
         T value = null;
         try {
-            value = objectMapper.readValue(httpResponse.body().toString(), clazz);
+            value = objectMapper.readValue(httpResponse.body(), clazz);
         } catch (IOException e) {
             throw new HttpRequestException("Failed to convert body to JSON object", e);
         }
