@@ -3,13 +3,12 @@
 Http4j
 ================
 
-Why in the world do we need another Http library for Java, when there is:
+Http4j is minimalistic and fluent library for making Http calls in Java.
 
-OkHttp, HttpComponents, Google Http, and many more. And even Java itself supports Http communication since Java9!
+Wait! Why in the world do we need another Http library for Java, when there is OkHttp, HttpComponents, Google Http, and gazillion other Http Clients for Java? 
 
-While there are a lot of Http libraries and the core Http client of Java is probably the best way to go, there a
-still some complexities coming with all those libraries (looking at you BodyPublishers and BodyParsers). So the idea
-for Http4j is to make Http communication as simple and self-explaining as possible, while also incorporating a most
+Well ... while there are a lot of Http libraries and the core Http client of Java is probably the best way to go (so Http4j is build on-top of it), there a still some complexities coming with all those libraries (looking at you BodyPublishers and BodyParsers). So the idea
+for Http4j was to make Http communication in Java as simple and self-explaining as possible, while also incorporating a most
 common use-case: sending and receiving JSON.
 
 Examples:
@@ -36,6 +35,32 @@ if (httpResponse.isSuccessful()) {
 }
 ```
 
+Full API:
+
+```
+Object object = null;
+HttpResponse httpResponse = HttpRequest.GET()
+    .to("foo")
+    .disableRedirects()
+    .withTimeout(Duration.ofSeconds(5))
+    .withHttpVersion1_1()
+    .withBarerToken("foo")
+    .withJsonBody(object)
+    .withFormAttribute("name", "value")
+    .withProxy("host", 8888)
+    .withBody("")
+    .withHeader("foo", "bar")
+    .withBasicAuthentication("foo", "bar")
+    .execute();
+    
+httpResponse.isSuccessful();
+httpResponse.isOk();
+httpResponse.getHttpStatusCode();
+httpResponse.getHeader("foo");
+httpResponse.getBody();
+httpResponse.getJsonBodyAs(Map.class);
+```
+
 Requires Java 11.
 
 Usage
@@ -53,12 +78,8 @@ Usage
 
 Roadmap
 ------------------
-[ ] JavaDoc
-
-[ ] More unit tests
-
-[ ] Check basic authentication via Proxy
-
-[ ] Support async Http connections
-
-[ ] Support form attachments
+- JavaDoc
+- More unit tests
+- Check basic authentication via Proxy
+- Support async Http connections
+- Support form attachments

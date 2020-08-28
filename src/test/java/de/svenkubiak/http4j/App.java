@@ -21,6 +21,7 @@ public class App {
                 .execute();
             
         httpResponse.isSuccessful();
+        httpResponse.isOk();
         httpResponse.getHttpStatusCode();
         httpResponse.getHeader("foo");
         httpResponse.getBody();
